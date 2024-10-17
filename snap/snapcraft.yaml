@@ -19,6 +19,19 @@ environment:
   XDG_CONFIG_HOME: $SNAP_USER_COMMON/.config
   XDG_DATA_HOME: $SNAP_USER_COMMON/.local/share
   XDG_STATE_HOME: $SNAP_USER_COMMON/.local/state
+  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14
+  GSETTINGS_SCHEMA_DIR: $SNAP/usr/share/glib-2.0/schemas${GSETTINGS_SCHEMA_DIR:+:$GSETTINGS_SCHEMA_DIR}
+  GI_TYPELIB_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gjs/girepository-1.0:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/gnome-shell/girepository-1.0:$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}
+
+layout:
+  /usr/share/libinput:
+    symlink: $SNAP/usr/share/libinput
+  /usr/share/gnome-shell:
+    bind: $SNAP/usr/share/gnome-shell
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0
+  # /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri:
+  #   bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri
 
 apps:
   ubuntu-desktop-session:
@@ -26,6 +39,7 @@ apps:
     slots:
       - wayland
       - x11
+      - desktop
 #      - dbus-gnome-mutter-service-channel
     plugs:
       - account-control
@@ -34,30 +48,47 @@ apps:
       - timeserver-control
       - timezone-control
       - shell-session-locale-files
-
-  gnome-terminal-server:
-    command: run.sh /usr/libexec/gnome-terminal-server
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gnome-terminal
+      - avahi-control
+      - audio-playback
+      - audio-record
+      - bluez
+      - bluetooth-control
+      - cups-control
+      - desktop-launch
+      - hardware-observe
+      - hostname-control
+      - home
+      - login-session-observe
+      - login-session-control
+      - mount-observe
+      - network-bind
+      - network-control
+      - network-observe
+      - network-manager
+      - opengl
+      - polkit-agent
+      - process-control
+      - shutdown
+      - ssh-keys
+      - system-observe
+      - upower-observe
 
   screencast-service:
-    command: run.sh /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Screencast
+    command: run.sh $SNAP/usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Screencast
     daemon: dbus
     daemon-scope: user
     activates-on:
       - dbus-gnome-shell-screencast
 
   nautilus-service:
-    command: run.sh /usr/bin/nautilus --gapplication-service
+    command: run.sh $SNAP/usr/bin/nautilus --gapplication-service
     daemon: dbus
     daemon-scope: user
     activates-on:
       - dbus-gnome-nautilus
 
   xdg-desktop-portal-gnome:
-    command: run.sh /usr/libexec/xdg-desktop-portal-gnome
+    command: run.sh $SNAP/usr/libexec/xdg-desktop-portal-gnome
     daemon: dbus
     daemon-scope: user
     activates-on:
@@ -73,41 +104,38 @@ apps:
   #  restart-delay: 1s
 
   ibus-service:
-    command: run.sh /usr/bin/ibus-daemon --panel disable
+    command: run.sh $SNAP/usr/bin/ibus-daemon --panel disable
     daemon: dbus
-    daemon-scope: user
+    passthrough:
+      daemon-scope: user
     activates-on:
       - dbus-ibus
 
   ibus-gtk3-service:
-    command: run.sh /usr/libexec/ibus-extension-gtk3
+    command: run.sh $SNAP/usr/libexec/ibus-extension-gtk3
     daemon: dbus
-    daemon-scope: user
+    passthrough:
+      daemon-scope: user
     activates-on:
       - dbus-ibus-gtk3
 
   ibus-portal-service:
-    command: run.sh /usr/libexec/ibus-portal
+    command: run.sh $SNAP/usr/libexec/ibus-portal
     daemon: dbus
-    daemon-scope: user
+    passthrough:
+      daemon-scope: user
     activates-on:
       - dbus-ibus-portal
 
   colord:
-    command: run.sh /usr/libexec/colord-session
+    command: run.sh $SNAP/usr/libexec/colord-session
     daemon: dbus
-    daemon-scope: user
+    passthrough:
+      daemon-scope: user
     activates-on:
       - dbus-colord
 
 plugs:
-  avahi-control: null
-  audio-playback: null
-  audio-record: null
-  bluez: null
-  bluetooth-control: null
-  cups-control: null
-  desktop-launch: null
   dot-local-share-nautilus:
     interface: personal-files
     write:
@@ -116,23 +144,6 @@ plugs:
     interface: personal-files
     write:
       - $HOME/.hidden
-  hardware-observe: null
-  hostname-control: null
-  home: null
-  login-session-observe: null
-  login-session-control: null
-  mount-observe: null
-  network-bind: null
-  network-control: null
-  network-observe: null
-  network-manager: null
-  opengl: null
-  #pipewire: null
-  polkit-agent: null
-  process-control: null
-  shutdown: null
-  ssh-keys: null
-  system-observe: null
   shell-session-locale-files:
     interface: personal-files
     write:
@@ -152,10 +163,8 @@ plugs:
       - /etc/default/im-config
       - /etc/X11/xinit/xinputrc
       - /etc/default/locale
-  upower-observe: null
 
 slots:
-  desktop: null
   dbus-canonical-unity:
     interface: dbus
     bus: session
@@ -385,10 +394,15 @@ slots:
     name: org.freedesktop.ColorHelper
     bus: session
 
+lint:
+  ignore:
+    - classic
+
 parts:
   scripts:
     plugin: dump
     source: ./scripts
+
   ubuntu-desktop-session:
     plugin: nil
     build-packages:
@@ -396,3 +410,60 @@ parts:
     override-build: |
       cd $CRAFT_PROJECT_DIR
       craftctl set version=$(date +%Y%m%d)+git$(git rev-parse --short HEAD)
+
+  packages:
+    plugin: nil
+    build-packages:
+      - libglib2.0-bin
+    stage-packages:
+      - alsa-ucm-conf
+      - fonts-ubuntu
+      - gir1.2-clutter-1.0
+      - gir1.2-dbusmenu-glib-0.4
+      - gir1.2-gsound-1.0
+      - gir1.2-glib-2.0-dev
+      - gkbd-capplet
+      - gnome-control-center
+      - gnome-keyring
+      - gnome-menus
+      - gnome-settings-daemon
+      - gnome-shell
+      - gnome-shell-common
+      - gnome-shell-extension-appindicator
+      - gnome-shell-extension-desktop-icons-ng
+      - gnome-shell-extension-ubuntu-dock
+      - gnome-shell-extension-ubuntu-tiling-assistant
+      - gsound-tools
+      - ibus
+      - inotify-tools
+      - libcanberra-pulse
+      - libgdk-pixbuf-2.0-0
+      - libgjs0g
+      - libgl1-mesa-dri
+      - libgsound0
+      - libpam-gnome-keyring
+      - libsnapd-glib-2-1
+      - locales-all
+      - locales
+      - polkitd
+      - pulseaudio-utils
+      - ubuntu-session
+      - ubuntu-settings
+      - xdg-desktop-portal
+      - xdg-desktop-portal-gnome
+      - xdg-desktop-portal-gtk
+      - xdg-user-dirs-gtk
+      - xdg-user-dirs
+      - xwayland
+      - yaru-theme-gtk
+      - yaru-theme-gnome-shell
+      - yaru-theme-icon
+    build-environment:
+      - LD_LIBRARY_PATH: $CRAFT_PART_INSTALL/usr/lib:$CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+    override-build: |
+      glib-compile-schemas $CRAFT_PART_INSTALL/usr/share/glib-2.0/schemas
+      export CACHE=$CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0/loaders.cache
+      $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0/loaders/* > $CACHE
+      sed -i "s@$CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0@/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0@g" $CACHE
+      craftctl default
+
