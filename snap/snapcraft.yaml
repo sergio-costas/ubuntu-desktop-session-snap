@@ -6,8 +6,7 @@ description: |
 
 grade: stable
 confinement: strict
-base: core24-desktop
-build-base: core24
+base: core24
 platforms:
   all:
     build-on: amd64
@@ -19,7 +18,7 @@ environment:
   XDG_CONFIG_HOME: $SNAP_USER_COMMON/.config
   XDG_DATA_HOME: $SNAP_USER_COMMON/.local/share
   XDG_STATE_HOME: $SNAP_USER_COMMON/.local/state
-  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14
+  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio
   GSETTINGS_SCHEMA_DIR: $SNAP/usr/share/glib-2.0/schemas${GSETTINGS_SCHEMA_DIR:+:$GSETTINGS_SCHEMA_DIR}
   GI_TYPELIB_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gjs/girepository-1.0:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/gnome-shell/girepository-1.0:$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}
 
@@ -30,8 +29,30 @@ layout:
     bind: $SNAP/usr/share/gnome-shell
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0
-  # /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri:
-  #   bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri
+  /usr/share/glvnd:
+    bind: $SNAP/usr/share/glvnd
+  /usr/share/X11:
+    bind: $SNAP/usr/share/X11
+  /usr/share/xml/iso-codes:
+    bind: $SNAP/usr/share/xml/iso-codes
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libgweather-4:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libgweather-4
+  /etc/fonts:
+    bind: $SNAP/etc/fonts
+  /usr/share/fonts:
+    bind: $SNAP/usr/share/fonts
+  /usr/share/fontconfig:
+    bind: $SNAP/usr/share/fontconfig
+  /usr/share/themes:
+    bind: $SNAP/usr/share/themes
+  /usr/share/icons:
+    bind: $SNAP/usr/share/icons
+  /etc/mime.types:
+    bind-file: $SNAP/etc/mime.types
+  /usr/share/mime:
+    bind: $SNAP/usr/share/mime
 
 apps:
   ubuntu-desktop-session:
@@ -76,21 +97,24 @@ apps:
   screencast-service:
     command: run.sh $SNAP/usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Screencast
     daemon: dbus
-    daemon-scope: user
+    passthrough:
+      daemon-scope: user
     activates-on:
       - dbus-gnome-shell-screencast
 
   nautilus-service:
     command: run.sh $SNAP/usr/bin/nautilus --gapplication-service
     daemon: dbus
-    daemon-scope: user
+    passthrough:
+      daemon-scope: user
     activates-on:
       - dbus-gnome-nautilus
 
   xdg-desktop-portal-gnome:
     command: run.sh $SNAP/usr/libexec/xdg-desktop-portal-gnome
     daemon: dbus
-    daemon-scope: user
+    passthrough:
+      daemon-scope: user
     activates-on:
       - dbus-freedesktop-impl-portal-gnome
     restart-delay: 1s
@@ -134,6 +158,30 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-colord
+
+  calendar-server:
+    command: run.sh $SNAP/usr/libexec/gnome-shell-calendar-server
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gnome-shell-calendar-server
+
+  gtk-settings:
+    command: run.sh $SNAP/usr/libexec/gsd-xsettings
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gtk-settings
+
+  gnome-settings:
+    command: run.sh $SNAP/usr/bin/gnome-control-center
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gnome-settings
 
 plugs:
   dot-local-share-nautilus:
@@ -237,6 +285,10 @@ slots:
     interface: dbus
     bus: session
     name: org.gnome.SessionManager
+  dbus-gnome-shell-calendar-server:
+    interface: dbus
+    bus: session
+    name: org.gnome.Shell.CalendarServer
   dbus-gsd:
     interface: dbus
     bus: session
@@ -436,15 +488,19 @@ parts:
       - gsound-tools
       - ibus
       - inotify-tools
+      - iso-codes
       - libcanberra-pulse
+      - libfreetype6
       - libgdk-pixbuf-2.0-0
       - libgjs0g
       - libgl1-mesa-dri
       - libgsound0
       - libpam-gnome-keyring
       - libsnapd-glib-2-1
+      - libsysmetrics1
       - locales-all
       - locales
+      - media-types
       - polkitd
       - pulseaudio-utils
       - ubuntu-session
@@ -454,6 +510,7 @@ parts:
       - xdg-desktop-portal-gtk
       - xdg-user-dirs-gtk
       - xdg-user-dirs
+      - xkb-data
       - xwayland
       - yaru-theme-gtk
       - yaru-theme-gnome-shell
@@ -461,9 +518,13 @@ parts:
     build-environment:
       - LD_LIBRARY_PATH: $CRAFT_PART_INSTALL/usr/lib:$CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
     override-build: |
+      # compile schemas
       glib-compile-schemas $CRAFT_PART_INSTALL/usr/share/glib-2.0/schemas
+      # update pixbuf-loaders cache
       export CACHE=$CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0/loaders.cache
       $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0/loaders/* > $CACHE
       sed -i "s@$CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0@/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0@g" $CACHE
+      # update MIME types
+      $CRAFT_PART_INSTALL/usr/bin/update-mime-database $CRAFT_PART_INSTALL/usr/share/mime
       craftctl default
 
