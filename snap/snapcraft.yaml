@@ -12,13 +12,17 @@ platforms:
     build-on: amd64
     build-for: all
 
+package-repositories:
+ - type: apt
+   ppa: desktop-snappers/core-desktop
+
 environment:
   HOME: $SNAP_REAL_HOME
   XDG_CACHE_HOME: $SNAP_USER_COMMON/.cache
   XDG_CONFIG_HOME: $SNAP_USER_COMMON/.config
   XDG_DATA_HOME: $SNAP_USER_COMMON/.local/share
   XDG_STATE_HOME: $SNAP_USER_COMMON/.local/state
-  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio
+  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/gnome-settings-daemon-46:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libunity
   GSETTINGS_SCHEMA_DIR: $SNAP/usr/share/glib-2.0/schemas${GSETTINGS_SCHEMA_DIR:+:$GSETTINGS_SCHEMA_DIR}
   GI_TYPELIB_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gjs/girepository-1.0:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/gnome-shell/girepository-1.0:$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}
 
@@ -53,6 +57,8 @@ layout:
     bind-file: $SNAP/etc/mime.types
   /usr/share/mime:
     bind: $SNAP/usr/share/mime
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/glib-2.0:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/glib-2.0
 
 apps:
   ubuntu-desktop-session:
@@ -64,21 +70,17 @@ apps:
 #      - dbus-gnome-mutter-service-channel
     plugs:
       - account-control
-      - locale-control
-      - time-control
-      - timeserver-control
-      - timezone-control
-      - shell-session-locale-files
-      - avahi-control
       - audio-playback
       - audio-record
-      - bluez
+      - avahi-control
       - bluetooth-control
+      - bluez
       - cups-control
       - desktop-launch
       - hardware-observe
       - hostname-control
       - home
+      - locale-control
       - login-session-observe
       - login-session-control
       - mount-observe
@@ -89,9 +91,13 @@ apps:
       - opengl
       - polkit-agent
       - process-control
+      - shell-session-locale-files
       - shutdown
       - ssh-keys
       - system-observe
+      - time-control
+      - timeserver-control
+      - timezone-control
       - upower-observe
 
   screencast-service:
@@ -182,6 +188,134 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gnome-settings
+
+  gnome-settings-a11y:
+    command: run.sh $SNAP/usr/libexec/gsd-a11y-settings
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-a11ysettings
+
+  gnome-settings-color:
+    command: run.sh $SNAP/usr/libexec/gsd-color
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-color
+
+  gnome-settings-datetime:
+    command: run.sh $SNAP/usr/libexec/gsd-datetime
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-datetime
+
+  gnome-settings-housekeeping:
+    command: run.sh $SNAP/usr/libexec/gsd-housekeeping
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-housekeeping
+
+  gnome-settings-keyboard:
+    command: run.sh $SNAP/usr/libexec/gsd-keyboard
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-keyboard
+
+  gnome-settings-media-keys:
+    command: run.sh $SNAP/usr/libexec/gsd-media-keys
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-mediakeys
+
+  gnome-settings-power:
+    command: run.sh $SNAP/usr/libexec/gsd-power
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-power
+
+  gnome-settings-print-notifications:
+    command: run.sh $SNAP/usr/libexec/gsd-print-notifications
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-printnotifications
+
+  gnome-settings-rfkill:
+    command: run.sh $SNAP/usr/libexec/gsd-rfkill
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-rfkill
+
+  gnome-settings-screensaver-proxy:
+    command: run.sh $SNAP/usr/libexec/gsd-screensaver-proxy
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-screensaverproxy
+
+  gnome-settings-sharing:
+    command: run.sh $SNAP/usr/libexec/gsd-sharing
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-sharing
+
+  gnome-settings-smartcard:
+    command: run.sh $SNAP/usr/libexec/gsd-smartcard
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-smartcard
+
+  gnome-settings-sound:
+    command: run.sh $SNAP/usr/libexec/gsd-sound
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-sound
+
+  gnome-settings-usb-protection:
+    command: run.sh $SNAP/usr/libexec/gsd-usd-protection
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-usbprotection
+
+  gnome-settings-wacom:
+    command: run.sh $SNAP/usr/libexec/gsd-wacom
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-wacom
+
+  gnome-settings-xsettings:
+    command: run.sh $SNAP/usr/libexec/gsd-xsettings
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gsd-xsettings
 
 plugs:
   dot-local-share-nautilus:
@@ -292,7 +426,7 @@ slots:
   dbus-gsd:
     interface: dbus
     bus: session
-    name: org.gnome.SettingsDaemon
+    name: org.gnome.Settings
   dbus-gsd-a11ysettings:
     interface: dbus
     bus: session

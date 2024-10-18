@@ -20,4 +20,7 @@ if ! grep "^snap$" $HOME/.hidden 2>&1 > /dev/null; then
   echo "snap" >> $HOME/.hidden
 fi
 
+export XDG_DATA_DIRS=${XDG_DATA_DIRS:+$XDG_DATA_DIRS:}$SNAP/usr/share
+export PATH=${PATH:+$PATH:}$SNAP/usr/bin
+
 exec $SNAP/usr/bin/gnome-shell --display-server --wayland
