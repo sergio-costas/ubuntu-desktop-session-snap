@@ -68,7 +68,7 @@ apps:
       - x11
       - desktop
 #      - dbus-gnome-mutter-service-channel
-    plugs:
+    plugs: &pluglist
       - account-control
       - audio-playback
       - audio-record
@@ -107,6 +107,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gnome-shell-screencast
+    restart-delay: 1s
+    plugs: *pluglist
 
   nautilus-service:
     command: run.sh $SNAP/usr/bin/nautilus --gapplication-service
@@ -115,6 +117,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gnome-nautilus
+    restart-delay: 1s
+    plugs: *pluglist
 
   xdg-desktop-portal-gnome:
     command: run.sh $SNAP/usr/libexec/xdg-desktop-portal-gnome
@@ -124,6 +128,7 @@ apps:
     activates-on:
       - dbus-freedesktop-impl-portal-gnome
     restart-delay: 1s
+    plugs: *pluglist
 
   #xdg-desktop-portal-gtk:
   #  command: run.sh /usr/libexec/xdg-desktop-portal-gtk
@@ -140,6 +145,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-ibus
+    restart-delay: 1s
+    plugs: *pluglist
 
   ibus-gtk3-service:
     command: run.sh $SNAP/usr/libexec/ibus-extension-gtk3
@@ -148,6 +155,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-ibus-gtk3
+    restart-delay: 1s
+    plugs: *pluglist
 
   ibus-portal-service:
     command: run.sh $SNAP/usr/libexec/ibus-portal
@@ -156,6 +165,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-ibus-portal
+    restart-delay: 1s
+    plugs: *pluglist
 
   colord:
     command: run.sh $SNAP/usr/libexec/colord-session
@@ -164,6 +175,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-colord
+    restart-delay: 1s
+    plugs: *pluglist
 
   calendar-server:
     command: run.sh $SNAP/usr/libexec/gnome-shell-calendar-server
@@ -172,6 +185,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gnome-shell-calendar-server
+    restart-delay: 1s
+    plugs: *pluglist
 
   gtk-settings:
     command: run.sh $SNAP/usr/libexec/gsd-xsettings
@@ -180,6 +195,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gtk-settings
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings:
     command: run.sh $SNAP/usr/bin/gnome-control-center
@@ -188,6 +205,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gnome-settings
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-a11y:
     command: run.sh $SNAP/usr/libexec/gsd-a11y-settings
@@ -196,6 +215,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-a11ysettings
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-color:
     command: run.sh $SNAP/usr/libexec/gsd-color
@@ -204,6 +225,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-color
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-datetime:
     command: run.sh $SNAP/usr/libexec/gsd-datetime
@@ -212,6 +235,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-datetime
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-housekeeping:
     command: run.sh $SNAP/usr/libexec/gsd-housekeeping
@@ -220,6 +245,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-housekeeping
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-keyboard:
     command: run.sh $SNAP/usr/libexec/gsd-keyboard
@@ -228,6 +255,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-keyboard
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-media-keys:
     command: run.sh $SNAP/usr/libexec/gsd-media-keys
@@ -236,6 +265,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-mediakeys
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-power:
     command: run.sh $SNAP/usr/libexec/gsd-power
@@ -244,6 +275,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-power
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-print-notifications:
     command: run.sh $SNAP/usr/libexec/gsd-print-notifications
@@ -252,6 +285,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-printnotifications
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-rfkill:
     command: run.sh $SNAP/usr/libexec/gsd-rfkill
@@ -260,6 +295,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-rfkill
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-screensaver-proxy:
     command: run.sh $SNAP/usr/libexec/gsd-screensaver-proxy
@@ -268,6 +305,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-screensaverproxy
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-sharing:
     command: run.sh $SNAP/usr/libexec/gsd-sharing
@@ -276,6 +315,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-sharing
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-smartcard:
     command: run.sh $SNAP/usr/libexec/gsd-smartcard
@@ -284,6 +325,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-smartcard
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-sound:
     command: run.sh $SNAP/usr/libexec/gsd-sound
@@ -292,6 +335,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-sound
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-usb-protection:
     command: run.sh $SNAP/usr/libexec/gsd-usd-protection
@@ -300,6 +345,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-usbprotection
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-wacom:
     command: run.sh $SNAP/usr/libexec/gsd-wacom
@@ -308,6 +355,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-wacom
+    restart-delay: 1s
+    plugs: *pluglist
 
   gnome-settings-xsettings:
     command: run.sh $SNAP/usr/libexec/gsd-xsettings
@@ -316,6 +365,8 @@ apps:
       daemon-scope: user
     activates-on:
       - dbus-gsd-xsettings
+    restart-delay: 1s
+    plugs: *pluglist
 
 plugs:
   dot-local-share-nautilus:
