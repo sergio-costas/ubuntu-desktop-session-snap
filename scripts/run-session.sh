@@ -26,12 +26,13 @@ fi
 export XDG_DATA_DIRS=${XDG_DATA_DIRS:+$XDG_DATA_DIRS:}$SNAP/usr/share
 export PATH=${PATH:+$PATH:}$SNAP/usr/bin
 
-if [ ! -f $USERPATH/wayland-0 ]; then
-  ln -s $USERPATH/snap.ubuntu-desktop-session/wayland-0 $USERPATH/wayland-0
-fi
+# if [ ! -f $USERPATH/wayland-0 ]; then
+#   ln -s $USERPATH/snap.ubuntu-desktop-session/wayland-0 $USERPATH/wayland-0
+# fi
 
-if [ ! -f $USERPATH/pulse ]; then
-  ln -s $USERPATH/snap.ubuntu-desktop-session/pulse $USERPATH/pulse
-fi
+# if [ ! -f $USERPATH/pulse ]; then
+#   ln -s $USERPATH/snap.ubuntu-desktop-session/pulse $USERPATH/pulse
+# fi
 
 exec $SNAP/usr/bin/gnome-shell --display-server --wayland
+#exec $SNAP/usr/bin/gnome-session --builtin --session=ubuntu 2> ~/output2.txt > ~/output.txt
