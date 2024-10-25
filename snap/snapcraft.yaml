@@ -22,7 +22,7 @@ environment:
   XDG_CONFIG_HOME: $SNAP_USER_COMMON/.config
   XDG_DATA_HOME: $SNAP_USER_COMMON/.local/share
   XDG_STATE_HOME: $SNAP_USER_COMMON/.local/state
-  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/gnome-settings-daemon-46:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libunity:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-miners-3.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-3.0
+  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/gnome-settings-daemon-46:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libunity:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-miners-3.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-3.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30
   GSETTINGS_SCHEMA_DIR: $SNAP/usr/share/glib-2.0/schemas${GSETTINGS_SCHEMA_DIR:+:$GSETTINGS_SCHEMA_DIR}
   GI_TYPELIB_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gjs/girepository-1.0:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/gnome-shell/girepository-1.0:$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}
 
@@ -53,7 +53,17 @@ layout:
     symlink: $SNAP/usr/share/tracker3
   /usr/share/tracker3-miners:
     symlink: $SNAP/usr/share/tracker3-miners
+  /usr/share/libwacom:
+    symlink: $SNAP/usr/share/libwacom
+  /usr/share/nautilus:
+    symlink: $SNAP/usr/share/nautilus
+  /usr/share/gtk-3.0:
+    symlink: $SNAP:/usr/share/gtk-3.0
+  /usr/share/gtk-4.0:
+    symlink: $SNAP:/usr/share/gtk-4.0
 
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30:
+    symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0:
     symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri:
@@ -64,7 +74,6 @@ layout:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/glib-2.0
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/samba:
     symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/samba
-
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-miners-3.0:
     symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-miners-3.0
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-3.0:
@@ -153,7 +162,7 @@ apps:
     passthrough:
       daemon-scope: user
     activates-on:
-      - dbus-gnome-shell-screencast
+      - dbus-gnome-mutter-screencast
     restart-delay: 1s
     plugs: *pluglist
 
@@ -177,13 +186,13 @@ apps:
     restart-delay: 1s
     plugs: *pluglist
 
-  #xdg-desktop-portal-gtk:
-  #  command: run.sh /usr/libexec/xdg-desktop-portal-gtk
-  #  daemon: dbus
-  #  daemon-scope: user
-  #  activates-on:
-  #    - dbus-freedesktop-impl-portal-gtk
-  #  restart-delay: 1s
+  xdg-desktop-portal-gtk:
+    command: run.sh /usr/libexec/xdg-desktop-portal-gtk
+    daemon: dbus
+    daemon-scope: user
+    activates-on:
+      - dbus-freedesktop-impl-portal-gtk
+    restart-delay: 1s
 
   ibus-service:
     command: run.sh $SNAP/usr/bin/ibus-daemon --panel disable
@@ -453,6 +462,14 @@ slots:
     interface: dbus
     bus: session
     name: com.canonical.Unity
+  dbus-desktop-icons:
+    interface: dbus
+    bus: session
+    name: com.rastersoft.ding
+  dbus-desktop-icons-extension:
+    interface: dbus
+    bus: session
+    name: com.rastersoft.dingextension
   dbus-freedesktop-tracker3-miner-files:
     interface: dbus
     bus: session
@@ -465,6 +482,95 @@ slots:
     interface: dbus
     bus: session
     name: org.freedesktop.impl.portal.desktop.gtk
+  dbus-gnome-mutter-displayconfig:
+    interface: dbus
+    bus: session
+    name: org.gnome.Mutter.DisplayConfig
+  dbus-gnome-mutter-idlemonitor:
+    interface: dbus
+    bus: session
+    name: org.gnome.Mutter.IdleMonitor
+  dbus-gnome-mutter-inputcapture:
+    interface: dbus
+    bus: session
+    name: org.gnome.Mutter.InputCapture
+  dbus-gnome-mutter-inputmapping:
+    interface: dbus
+    bus: session
+    name: org.gnome.Mutter.InputMapping
+  dbus-gnome-mutter-remotedesktop:
+    interface: dbus
+    bus: session
+    name: org.gnome.Mutter.RemoteDesktop
+  dbus-gnome-mutter-screencast:
+    interface: dbus
+    bus: session
+    name: org.gnome.Mutter.ScreenCast
+  dbus-gnome-mutter-service-channel:
+    interface: dbus
+    bus: session
+    name: org.gnome.Mutter.ServiceChannel
+  dbus-gsd-color:
+    interface: dbus
+    bus: session
+    name: org.gnome.SettingsDaemon.Color
+  dbus-gsd-power:
+    interface: dbus
+    bus: session
+    name: org.gnome.SettingsDaemon.Power
+  dbus-gsd-rfkill:
+    interface: dbus
+    bus: session
+    name: org.gnome.SettingsDaemon.Rfkill
+  dbus-gsd-wacom:
+    interface: dbus
+    bus: session
+    name: org.gnome.SettingsDaemon.Wacom
+  dbus-gnome-shell:
+    interface: dbus
+    bus: session
+    name: org.gnome.Shell
+  dbus-gnome-shell-audio:
+    interface: dbus
+    bus: session
+    name: org.gnome.Shell.AudioDeviceSelection
+  dbus-gnome-shell-introspect:
+    interface: dbus
+    bus: session
+    name: org.gnome.Shell.Introspect
+  dbus-gnome-shell-portal:
+    interface: dbus
+    bus: session
+    name: org.gnome.Shell.Portal
+  dbus-gnome-shell-screenshield:
+    interface: dbus
+    bus: session
+    name: org.gnome.Shell.ScreenShield
+  dbus-gnome-shell-screenshot:
+    interface: dbus
+    bus: session
+    name: org.gnome.Shell.Screenshot
+  dbus-gnome-shell-wacom:
+    interface: dbus
+    bus: session
+    name: org.gnome.Shell.Wacom.PadOsd
+  dbus-gnome-keyring-sysprompter:
+    interface: dbus
+    bus: session
+    name: org.gnome.keyring.SystemPrompter
+  dbus-gtk-mountoperationhandler:
+    interface: dbus
+    bus: session
+    name: org.gtk.MountOperationHandler
+  dbus-gtk-notifications:
+    interface: dbus
+    bus: session
+    name: org.gtk.Notifications
+  dbus-kde-statusnotifier:
+    interface: dbus
+    bus: session
+    name: org.kde.StatusNotifierWatcher
+
   dbus-freedesktop-screensaver:
     interface: dbus
     bus: session
@@ -485,34 +591,10 @@ slots:
     interface: dbus
     bus: session
     name: org.gnome.keyring
-  dbus-gnome-keyring-sysprompter:
-    interface: dbus
-    bus: session
-    name: org.gnome.keyring.SystemPrompter
   dbus-gnome-magnifier:
     interface: dbus
     bus: session
     name: org.gnome.Magnifier
-  dbus-gnome-mutter-displayconfig:
-    interface: dbus
-    bus: session
-    name: org.gnome.Mutter.DisplayConfig
-  dbus-gnome-mutter-idlemonitor:
-    interface: dbus
-    bus: session
-    name: org.gnome.Mutter.IdleMonitor
-  dbus-gnome-mutter-remotedesktop:
-    interface: dbus
-    bus: session
-    name: org.gnome.Mutter.RemoteDesktop
-  dbus-gnome-mutter-screencast:
-    interface: dbus
-    bus: session
-    name: org.gnome.Mutter.ScreenCast
-  #dbus-gnome-mutter-service-channel:
-  #  interface: dbus
-  #  bus: session
-  #  name: org.gnome.Mutter.ServiceChannel
   dbus-gnome-panel:
     interface: dbus
     bus: session
@@ -537,10 +619,6 @@ slots:
     interface: dbus
     bus: session
     name: org.gnome.SettingsDaemon.A11ySettings
-  dbus-gsd-color:
-    interface: dbus
-    bus: session
-    name: org.gnome.SettingsDaemon.Color
   dbus-gsd-datetime:
     interface: dbus
     bus: session
@@ -557,18 +635,10 @@ slots:
     interface: dbus
     bus: session
     name: org.gnome.SettingsDaemon.MediaKeys
-  dbus-gsd-power:
-    interface: dbus
-    bus: session
-    name: org.gnome.SettingsDaemon.Power
   dbus-gsd-printnotifications:
     interface: dbus
     bus: session
     name: org.gnome.SettingsDaemon.PrintNotifications
-  dbus-gsd-rfkill:
-    interface: dbus
-    bus: session
-    name: org.gnome.SettingsDaemon.Rfkill
   dbus-gsd-screensaverproxy:
     interface: dbus
     bus: session
@@ -589,10 +659,6 @@ slots:
     interface: dbus
     bus: session
     name: org.gnome.SettingsDaemon.UsbProtection
-  dbus-gsd-wacom:
-    interface: dbus
-    bus: session
-    name: org.gnome.SettingsDaemon.Wacom
   dbus-gsd-wwan:
     interface: dbus
     bus: session
@@ -605,34 +671,6 @@ slots:
     interface: dbus
     bus: session
     name: org.gnome.Nautilus
-  dbus-gnome-shell:
-    interface: dbus
-    bus: session
-    name: org.gnome.Shell
-  dbus-gnome-shell-audio:
-    interface: dbus
-    bus: session
-    name: org.gnome.Shell.AudioDeviceSelection
-  dbus-gnome-shell-introspect:
-    interface: dbus
-    bus: session
-    name: org.gnome.Shell.Introspect
-  dbus-gnome-shell-portal:
-    interface: dbus
-    bus: session
-    name: org.gnome.Shell.Portal
-  dbus-gnome-shell-screencast:
-    interface: dbus
-    bus: session
-    name: org.gnome.Shell.Screencast
-  dbus-gnome-shell-screenshot:
-    interface: dbus
-    bus: session
-    name: org.gnome.Shell.Screenshot
-  dbus-gnome-shell-wacom:
-    interface: dbus
-    bus: session
-    name: org.gnome.Shell.Wacom.PadOsd
   dbus-gnome-settings:
     interface: dbus
     bus: session
@@ -641,30 +679,10 @@ slots:
     interface: dbus
     bus: session
     name: org.gnome.Terminal
-  dbus-gtk-mountoperationhandler:
-    interface: dbus
-    bus: session
-    name: org.gtk.MountOperationHandler
-  dbus-gtk-notifications:
-    interface: dbus
-    bus: session
-    name: org.gtk.Notifications
   dbus-gtk-settings:
     interface: dbus
     bus: session
     name: org.gtk.Settings
-  dbus-kde-statusnotifier:
-    interface: dbus
-    bus: session
-    name: org.kde.StatusNotifierWatcher
-  dbus-desktop-icons:
-    interface: dbus
-    bus: session
-    name: com.rastersoft.ding
-  dbus-desktop-icons-extension:
-    interface: dbus
-    bus: session
-    name: com.rastersoft.dingextension
   dbus-portal:
     interface: dbus
     name: org.freedesktop.impl.portal.PermissionStore
