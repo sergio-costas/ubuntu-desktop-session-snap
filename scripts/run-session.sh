@@ -34,5 +34,5 @@ export PATH=${PATH:+$PATH:}$SNAP/usr/bin
 #   ln -s $USERPATH/snap.ubuntu-desktop-session/pulse $USERPATH/pulse
 # fi
 
-exec $SNAP/usr/bin/gnome-shell --display-server --wayland
-#exec $SNAP/usr/bin/gnome-session --builtin --session=ubuntu 2> ~/output2.txt > ~/output.txt
+#exec $SNAP/usr/bin/gnome-shell --display-server --wayland
+exec $SNAP/usr/bin/gnome-session --builtin --session=ubuntu 2> ~/output2.txt > ~/output.txt

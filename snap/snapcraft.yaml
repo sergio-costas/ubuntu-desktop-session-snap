@@ -58,9 +58,11 @@ layout:
   /usr/share/nautilus:
     symlink: $SNAP/usr/share/nautilus
   /usr/share/gtk-3.0:
-    symlink: $SNAP:/usr/share/gtk-3.0
+    symlink: $SNAP/usr/share/gtk-3.0
   /usr/share/gtk-4.0:
-    symlink: $SNAP:/usr/share/gtk-4.0
+    symlink: $SNAP/usr/share/gtk-4.0
+  /usr/share/defaults:
+    symlink: $SNAP/usr/share/defaults
 
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30:
     symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30
@@ -159,32 +161,35 @@ apps:
   screencast-service:
     command: run.sh $SNAP/usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Screencast
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gnome-mutter-screencast
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gnome-mutter-screencast
 
   nautilus-service:
     command: run.sh $SNAP/usr/bin/nautilus --gapplication-service
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gnome-nautilus
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gnome-nautilus
 
   xdg-desktop-portal-gnome:
     command: run.sh $SNAP/usr/libexec/xdg-desktop-portal-gnome
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-freedesktop-impl-portal-gnome
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-freedesktop-impl-portal-gnome
 
   xdg-desktop-portal-gtk:
     command: run.sh /usr/libexec/xdg-desktop-portal-gtk
@@ -193,246 +198,283 @@ apps:
     activates-on:
       - dbus-freedesktop-impl-portal-gtk
     restart-delay: 1s
+    slots:
+      - dbus-freedesktop-impl-portal-gtk
 
   ibus-service:
     command: run.sh $SNAP/usr/bin/ibus-daemon --panel disable
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-ibus
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-ibus
 
   ibus-gtk3-service:
     command: run.sh $SNAP/usr/libexec/ibus-extension-gtk3
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-ibus-gtk3
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-ibus-gtk3
 
   ibus-portal-service:
     command: run.sh $SNAP/usr/libexec/ibus-portal
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-ibus-portal
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-ibus-portal
 
   colord:
     command: run.sh $SNAP/usr/libexec/colord-session
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-colord
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-colord
 
   calendar-server:
     command: run.sh $SNAP/usr/libexec/gnome-shell-calendar-server
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gnome-shell-calendar-server
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gnome-shell-calendar-server
 
   gtk-settings:
     command: run.sh $SNAP/usr/libexec/gsd-xsettings
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gtk-settings
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gtk-settings
 
   gnome-settings:
     command: run.sh $SNAP/usr/bin/gnome-control-center
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gnome-settings
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gnome-settings
 
   gnome-settings-a11y:
     command: run.sh $SNAP/usr/libexec/gsd-a11y-settings
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-a11ysettings
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-a11ysettings
 
   gnome-settings-color:
     command: run.sh $SNAP/usr/libexec/gsd-color
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-color
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-color
 
   gnome-settings-datetime:
     command: run.sh $SNAP/usr/libexec/gsd-datetime
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-datetime
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-datetime
 
   gnome-settings-housekeeping:
     command: run.sh $SNAP/usr/libexec/gsd-housekeeping
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-housekeeping
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-housekeeping
 
   gnome-settings-keyboard:
     command: run.sh $SNAP/usr/libexec/gsd-keyboard
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-keyboard
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-keyboard
 
   gnome-settings-media-keys:
     command: run.sh $SNAP/usr/libexec/gsd-media-keys
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-mediakeys
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-mediakeys
 
   gnome-settings-power:
     command: run.sh $SNAP/usr/libexec/gsd-power
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-power
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-power
 
   gnome-settings-print-notifications:
     command: run.sh $SNAP/usr/libexec/gsd-print-notifications
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-printnotifications
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-printnotifications
 
   gnome-settings-rfkill:
     command: run.sh $SNAP/usr/libexec/gsd-rfkill
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-rfkill
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-rfkill
 
   gnome-settings-screensaver-proxy:
     command: run.sh $SNAP/usr/libexec/gsd-screensaver-proxy
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-screensaverproxy
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-screensaverproxy
 
   gnome-settings-sharing:
     command: run.sh $SNAP/usr/libexec/gsd-sharing
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-sharing
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-sharing
 
   gnome-settings-smartcard:
     command: run.sh $SNAP/usr/libexec/gsd-smartcard
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-smartcard
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-smartcard
 
   gnome-settings-sound:
     command: run.sh $SNAP/usr/libexec/gsd-sound
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-sound
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-sound
 
   gnome-settings-usb-protection:
     command: run.sh $SNAP/usr/libexec/gsd-usd-protection
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-usbprotection
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-usbprotection
 
   gnome-settings-wacom:
     command: run.sh $SNAP/usr/libexec/gsd-wacom
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-wacom
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-wacom
 
   gnome-settings-xsettings:
     command: run.sh $SNAP/usr/libexec/gsd-xsettings
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-gsd-xsettings
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-gsd-xsettings
 
   tracker:
     command: run.sh $SNAP/usr/libexec/tracker-miner-fs-3
     daemon: dbus
-    passthrough:
-      daemon-scope: user
+    daemon-scope: user
     activates-on:
       - dbus-freedesktop-tracker3-miner-files
     restart-delay: 1s
     plugs: *pluglist
+    slots:
+      - dbus-freedesktop-tracker3-miner-files
+
+  a11ybus:
+    command: run.sh /usr/libexec/at-spi-bus-launcher --launch-immediately
+    daemon: dbus
+    daemon-scope: user
+    activates-on:
+      - dbus-a11y-bus
+    restart-delay: 1s
+    plugs: *pluglist
+    slots:
+      - dbus-a11y-bus
 
 plugs:
   dot-local-share-nautilus:
@@ -458,6 +500,10 @@ plugs:
       - /etc/default/locale
 
 slots:
+  dbus-a11y-bus:
+    interface: dbus
+    bus: session
+    name: org.a11y.Bus
   dbus-canonical-unity:
     interface: dbus
     bus: session
@@ -470,6 +516,10 @@ slots:
     interface: dbus
     bus: session
     name: com.rastersoft.dingextension
+  dbus-desktop-icons-test:
+    interface: dbus
+    bus: session
+    name: com.rastersoft.dingtest
   dbus-freedesktop-tracker3-miner-files:
     interface: dbus
     bus: session
@@ -727,6 +777,7 @@ parts:
       - libglib2.0-bin
     stage-packages:
       - alsa-ucm-conf
+      - at-spi2-core
       - fonts-ubuntu
       - gir1.2-clutter-1.0
       - gir1.2-dbusmenu-glib-0.4
