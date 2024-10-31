@@ -234,12 +234,13 @@ apps:
     slots: *slotlist
 
   xdg-desktop-portal-gtk:
-    command: run.sh /usr/libexec/xdg-desktop-portal-gtk
+    command: run.sh $SNAP/usr/libexec/xdg-desktop-portal-gtk
     daemon: dbus
     daemon-scope: user
     activates-on:
       - dbus-freedesktop-impl-portal-gtk
     restart-delay: 1s
+    plugs: *pluglist
     slots: *slotlist
 
   ibus-service:
