@@ -63,6 +63,8 @@ layout:
     symlink: $SNAP/usr/share/gtk-4.0
   /usr/share/defaults:
     symlink: $SNAP/usr/share/defaults
+  /usr/share/xdg-desktop-portal:
+    symlink: $SNAP/usr/share/xdg-desktop-portal
 
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30:
     symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30
@@ -103,10 +105,12 @@ layout:
   /etc/pulse:
     bind: $SNAP/etc/pulse
 
-  /usr/bin/XWayland:
-    symlink: $SNAP/usr/bin/XWayland
+  /usr/bin/Xwayland:
+    symlink: $SNAP/usr/bin/Xwayland
   /usr/bin/X11:
     symlink: $SNAP/usr/bin/X11
+  /usr/bin/xkbcomp:
+    symlink: $SNAP/usr/bin/xkbcomp
   /usr/bin/xdg-user-dir:
     symlink: $SNAP/usr/bin/xdg-user-dir
   /usr/bin/xdg-user-dirs-update:
@@ -117,10 +121,52 @@ layout:
 apps:
   ubuntu-desktop-session:
     command: run-session.sh
-    slots:
+    slots: &slotlist
       - wayland
       - x11
       - desktop
+      - dbus-gnome-mutter-screencast
+      - dbus-gnome-nautilus
+      - dbus-freedesktop-impl-portal-gnome
+      - dbus-freedesktop-impl-portal-gtk
+      - dbus-ibus
+      - dbus-ibus-gtk3
+      - dbus-ibus-portal
+      - dbus-colord
+      - dbus-gnome-shell-calendar-server
+      - dbus-gtk-settings
+      - dbus-gnome-settings
+      - dbus-gsd-a11ysettings
+      - dbus-gsd-color
+      - dbus-gsd-datetime
+      - dbus-gsd-housekeeping
+      - dbus-gsd-keyboard
+      - dbus-gsd-mediakeys
+      - dbus-gsd-power
+      - dbus-gsd-printnotifications
+      - dbus-gsd-rfkill
+      - dbus-gsd-screensaverproxy
+      - dbus-gsd-sharing
+      - dbus-gsd-smartcard
+      - dbus-gsd-sound
+      - dbus-gsd-usbprotection
+      - dbus-gsd-wacom
+      - dbus-gsd-xsettings
+      - dbus-freedesktop-tracker3-miner-files
+      - dbus-a11y-bus
+      - dbus-freedesktop-impl-portal-screen-cast
+      - dbus-freedesktop-impl-portal-dynamic-launcher
+      - dbus-freedesktop-impl-portal-wallpaper
+      - dbus-freedesktop-impl-portal-screenshot
+      - dbus-freedesktop-impl-portal-print
+      - dbus-freedesktop-impl-portal-lockdown
+      - dbus-freedesktop-impl-portal-background
+      - dbus-freedesktop-impl-portal-appchooser
+      - dbus-freedesktop-impl-portal-account
+      - dbus-freedesktop-impl-portal-access
+      - dbus-freedesktop-impl-portal-filechooser
+      - dbus-freedesktop-impl-portal-settings
+
 #      - dbus-gnome-mutter-service-channel
     plugs: &pluglist
       - account-control
@@ -152,7 +198,6 @@ apps:
       - shutdown
       - ssh-keys
       - system-observe
-      - systemd-user-control
       - time-control
       - timeserver-control
       - timezone-control
@@ -166,8 +211,7 @@ apps:
       - dbus-gnome-mutter-screencast
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gnome-mutter-screencast
+    slots: *slotlist
 
   nautilus-service:
     command: run.sh $SNAP/usr/bin/nautilus --gapplication-service
@@ -177,8 +221,7 @@ apps:
       - dbus-gnome-nautilus
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gnome-nautilus
+    slots: *slotlist
 
   xdg-desktop-portal-gnome:
     command: run.sh $SNAP/usr/libexec/xdg-desktop-portal-gnome
@@ -188,8 +231,7 @@ apps:
       - dbus-freedesktop-impl-portal-gnome
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-freedesktop-impl-portal-gnome
+    slots: *slotlist
 
   xdg-desktop-portal-gtk:
     command: run.sh /usr/libexec/xdg-desktop-portal-gtk
@@ -198,8 +240,7 @@ apps:
     activates-on:
       - dbus-freedesktop-impl-portal-gtk
     restart-delay: 1s
-    slots:
-      - dbus-freedesktop-impl-portal-gtk
+    slots: *slotlist
 
   ibus-service:
     command: run.sh $SNAP/usr/bin/ibus-daemon --panel disable
@@ -209,8 +250,7 @@ apps:
       - dbus-ibus
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-ibus
+    slots: *slotlist
 
   ibus-gtk3-service:
     command: run.sh $SNAP/usr/libexec/ibus-extension-gtk3
@@ -220,8 +260,7 @@ apps:
       - dbus-ibus-gtk3
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-ibus-gtk3
+    slots: *slotlist
 
   ibus-portal-service:
     command: run.sh $SNAP/usr/libexec/ibus-portal
@@ -231,8 +270,7 @@ apps:
       - dbus-ibus-portal
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-ibus-portal
+    slots: *slotlist
 
   colord:
     command: run.sh $SNAP/usr/libexec/colord-session
@@ -242,8 +280,7 @@ apps:
       - dbus-colord
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-colord
+    slots: *slotlist
 
   calendar-server:
     command: run.sh $SNAP/usr/libexec/gnome-shell-calendar-server
@@ -253,8 +290,7 @@ apps:
       - dbus-gnome-shell-calendar-server
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gnome-shell-calendar-server
+    slots: *slotlist
 
   gtk-settings:
     command: run.sh $SNAP/usr/libexec/gsd-xsettings
@@ -264,8 +300,7 @@ apps:
       - dbus-gtk-settings
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gtk-settings
+    slots: *slotlist
 
   gnome-settings:
     command: run.sh $SNAP/usr/bin/gnome-control-center
@@ -275,8 +310,7 @@ apps:
       - dbus-gnome-settings
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gnome-settings
+    slots: *slotlist
 
   gnome-settings-a11y:
     command: run.sh $SNAP/usr/libexec/gsd-a11y-settings
@@ -286,8 +320,7 @@ apps:
       - dbus-gsd-a11ysettings
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-a11ysettings
+    slots: *slotlist
 
   gnome-settings-color:
     command: run.sh $SNAP/usr/libexec/gsd-color
@@ -297,8 +330,7 @@ apps:
       - dbus-gsd-color
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-color
+    slots: *slotlist
 
   gnome-settings-datetime:
     command: run.sh $SNAP/usr/libexec/gsd-datetime
@@ -308,8 +340,7 @@ apps:
       - dbus-gsd-datetime
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-datetime
+    slots: *slotlist
 
   gnome-settings-housekeeping:
     command: run.sh $SNAP/usr/libexec/gsd-housekeeping
@@ -319,8 +350,7 @@ apps:
       - dbus-gsd-housekeeping
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-housekeeping
+    slots: *slotlist
 
   gnome-settings-keyboard:
     command: run.sh $SNAP/usr/libexec/gsd-keyboard
@@ -330,8 +360,7 @@ apps:
       - dbus-gsd-keyboard
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-keyboard
+    slots: *slotlist
 
   gnome-settings-media-keys:
     command: run.sh $SNAP/usr/libexec/gsd-media-keys
@@ -341,8 +370,7 @@ apps:
       - dbus-gsd-mediakeys
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-mediakeys
+    slots: *slotlist
 
   gnome-settings-power:
     command: run.sh $SNAP/usr/libexec/gsd-power
@@ -352,8 +380,7 @@ apps:
       - dbus-gsd-power
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-power
+    slots: *slotlist
 
   gnome-settings-print-notifications:
     command: run.sh $SNAP/usr/libexec/gsd-print-notifications
@@ -363,8 +390,7 @@ apps:
       - dbus-gsd-printnotifications
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-printnotifications
+    slots: *slotlist
 
   gnome-settings-rfkill:
     command: run.sh $SNAP/usr/libexec/gsd-rfkill
@@ -374,8 +400,7 @@ apps:
       - dbus-gsd-rfkill
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-rfkill
+    slots: *slotlist
 
   gnome-settings-screensaver-proxy:
     command: run.sh $SNAP/usr/libexec/gsd-screensaver-proxy
@@ -385,8 +410,7 @@ apps:
       - dbus-gsd-screensaverproxy
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-screensaverproxy
+    slots: *slotlist
 
   gnome-settings-sharing:
     command: run.sh $SNAP/usr/libexec/gsd-sharing
@@ -396,8 +420,7 @@ apps:
       - dbus-gsd-sharing
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-sharing
+    slots: *slotlist
 
   gnome-settings-smartcard:
     command: run.sh $SNAP/usr/libexec/gsd-smartcard
@@ -407,8 +430,7 @@ apps:
       - dbus-gsd-smartcard
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-smartcard
+    slots: *slotlist
 
   gnome-settings-sound:
     command: run.sh $SNAP/usr/libexec/gsd-sound
@@ -418,8 +440,7 @@ apps:
       - dbus-gsd-sound
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-sound
+    slots: *slotlist
 
   gnome-settings-usb-protection:
     command: run.sh $SNAP/usr/libexec/gsd-usd-protection
@@ -429,8 +450,7 @@ apps:
       - dbus-gsd-usbprotection
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-usbprotection
+    slots: *slotlist
 
   gnome-settings-wacom:
     command: run.sh $SNAP/usr/libexec/gsd-wacom
@@ -440,8 +460,7 @@ apps:
       - dbus-gsd-wacom
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-wacom
+    slots: *slotlist
 
   gnome-settings-xsettings:
     command: run.sh $SNAP/usr/libexec/gsd-xsettings
@@ -451,8 +470,7 @@ apps:
       - dbus-gsd-xsettings
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-gsd-xsettings
+    slots: *slotlist
 
   tracker:
     command: run.sh $SNAP/usr/libexec/tracker-miner-fs-3
@@ -462,8 +480,7 @@ apps:
       - dbus-freedesktop-tracker3-miner-files
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-freedesktop-tracker3-miner-files
+    slots: *slotlist
 
   a11ybus:
     command: run.sh /usr/libexec/at-spi-bus-launcher --launch-immediately
@@ -473,8 +490,7 @@ apps:
       - dbus-a11y-bus
     restart-delay: 1s
     plugs: *pluglist
-    slots:
-      - dbus-a11y-bus
+    slots: *slotlist
 
 plugs:
   dot-local-share-nautilus:
@@ -528,6 +544,54 @@ slots:
     interface: dbus
     bus: session
     name: org.freedesktop.impl.portal.desktop.gnome
+  dbus-freedesktop-impl-portal-settings:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.impl.portal.desktop.settings
+  dbus-freedesktop-impl-portal-filechooser:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.impl.portal.desktop.FileChooser
+  dbus-freedesktop-impl-portal-access:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.impl.portal.desktop.Access
+  dbus-freedesktop-impl-portal-account:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.impl.portal.desktop.Account
+  dbus-freedesktop-impl-portal-appchooser:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.impl.portal.desktop.AppChooser
+  dbus-freedesktop-impl-portal-background:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.impl.portal.desktop.Background
+  dbus-freedesktop-impl-portal-lockdown:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.impl.portal.desktop.Lockdown
+  dbus-freedesktop-impl-portal-print:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.impl.portal.desktop.Print
+  dbus-freedesktop-impl-portal-screenshot:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.impl.portal.desktop.Screenshot
+  dbus-freedesktop-impl-portal-wallpaper:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.impl.portal.desktop.Wallpaper
+  dbus-freedesktop-impl-portal-dynamic-launcher:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.impl.portal.desktop.DynamicLauncher
+  dbus-freedesktop-impl-portal-screen-cast:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.impl.portal.desktop.ScreenCast
   dbus-freedesktop-impl-portal-gtk:
     interface: dbus
     bus: session
@@ -796,6 +860,7 @@ parts:
       - gnome-shell-extension-ubuntu-tiling-assistant
       - gsound-tools
       - ibus
+      - im-config
       - inotify-tools
       - iso-codes
       - libcanberra-pulse
@@ -862,7 +927,8 @@ parts:
       [GNOME Session]
       Name=Ubuntu
       # Must be in sync with gnome-session@ubuntu.target.d/ubuntu.session.conf drop-in
-      RequiredComponents=org.gnome.Shell;
+      RequiredComponents=org.gnome.Shell;org.gnome.SettingsDaemon.A11ySettings;org.gnome.SettingsDaemon.Datetime;org.gnome.SettingsDaemon.Housekeeping;org.gnome.SettingsDaemon.Keyboard;org.gnome.SettingsDaemon.MediaKeys;org.gnome.SettingsDaemon.Power;org.gnome.SettingsDaemon.PrintNotifications;org.gnome.SettingsDaemon.Rfkill;org.gnome.SettingsDaemon.ScreensaverProxy;org.gnome.SettingsDaemon.Sharing;org.gnome.SettingsDaemon.Smartcard;org.gnome.SettingsDaemon.Sound;org.gnome.SettingsDaemon.Wacom;
+      #org.gnome.SettingsDaemon.XSettings;
       EOF
 
       craftctl default
