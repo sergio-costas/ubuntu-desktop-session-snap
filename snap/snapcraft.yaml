@@ -225,21 +225,11 @@ apps:
 
   xdg-desktop-portal-gnome:
     command: run.sh $SNAP/usr/libexec/xdg-desktop-portal-gnome
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-freedesktop-impl-portal-gnome
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
   xdg-desktop-portal-gtk:
     command: run.sh $SNAP/usr/libexec/xdg-desktop-portal-gtk
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-freedesktop-impl-portal-gtk
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
@@ -295,11 +285,6 @@ apps:
 
   gtk-settings:
     command: run.sh $SNAP/usr/libexec/gsd-xsettings
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gtk-settings
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
@@ -315,11 +300,6 @@ apps:
 
   gnome-settings-a11y:
     command: run.sh $SNAP/usr/libexec/gsd-a11y-settings
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-a11ysettings
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
@@ -335,111 +315,56 @@ apps:
 
   gnome-settings-datetime:
     command: run.sh $SNAP/usr/libexec/gsd-datetime
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-datetime
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
   gnome-settings-housekeeping:
     command: run.sh $SNAP/usr/libexec/gsd-housekeeping
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-housekeeping
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
   gnome-settings-keyboard:
     command: run.sh $SNAP/usr/libexec/gsd-keyboard
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-keyboard
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
   gnome-settings-media-keys:
     command: run.sh $SNAP/usr/libexec/gsd-media-keys
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-mediakeys
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
   gnome-settings-power:
     command: run.sh $SNAP/usr/libexec/gsd-power
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-power
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
   gnome-settings-print-notifications:
     command: run.sh $SNAP/usr/libexec/gsd-print-notifications
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-printnotifications
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
   gnome-settings-rfkill:
     command: run.sh $SNAP/usr/libexec/gsd-rfkill
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-rfkill
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
   gnome-settings-screensaver-proxy:
     command: run.sh $SNAP/usr/libexec/gsd-screensaver-proxy
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-screensaverproxy
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
   gnome-settings-sharing:
     command: run.sh $SNAP/usr/libexec/gsd-sharing
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-sharing
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
   gnome-settings-smartcard:
     command: run.sh $SNAP/usr/libexec/gsd-smartcard
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-smartcard
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
   gnome-settings-sound:
     command: run.sh $SNAP/usr/libexec/gsd-sound
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-sound
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
@@ -455,21 +380,11 @@ apps:
 
   gnome-settings-wacom:
     command: run.sh $SNAP/usr/libexec/gsd-wacom
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-wacom
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
   gnome-settings-xsettings:
     command: run.sh $SNAP/usr/libexec/gsd-xsettings
-    daemon: dbus
-    daemon-scope: user
-    activates-on:
-      - dbus-gsd-xsettings
-    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
@@ -928,8 +843,7 @@ parts:
       [GNOME Session]
       Name=Ubuntu
       # Must be in sync with gnome-session@ubuntu.target.d/ubuntu.session.conf drop-in
-      RequiredComponents=org.gnome.Shell;org.gnome.SettingsDaemon.A11ySettings;org.gnome.SettingsDaemon.Datetime;org.gnome.SettingsDaemon.Housekeeping;org.gnome.SettingsDaemon.Keyboard;org.gnome.SettingsDaemon.MediaKeys;org.gnome.SettingsDaemon.Power;org.gnome.SettingsDaemon.PrintNotifications;org.gnome.SettingsDaemon.Rfkill;org.gnome.SettingsDaemon.ScreensaverProxy;org.gnome.SettingsDaemon.Sharing;org.gnome.SettingsDaemon.Smartcard;org.gnome.SettingsDaemon.Sound;org.gnome.SettingsDaemon.Wacom;
-      #org.gnome.SettingsDaemon.XSettings;
+      RequiredComponents=org.gnome.Shell;org.gnome.SettingsDaemon.A11ySettings;org.gnome.SettingsDaemon.Datetime;org.gnome.SettingsDaemon.Housekeeping;org.gnome.SettingsDaemon.Keyboard;org.gnome.SettingsDaemon.MediaKeys;org.gnome.SettingsDaemon.Power;org.gnome.SettingsDaemon.PrintNotifications;org.gnome.SettingsDaemon.Rfkill;org.gnome.SettingsDaemon.ScreensaverProxy;org.gnome.SettingsDaemon.Sharing;org.gnome.SettingsDaemon.Smartcard;org.gnome.SettingsDaemon.Sound;org.gnome.SettingsDaemon.Wacom;org.gnome.SettingsDaemon.XSettings;
       EOF
 
       craftctl default
