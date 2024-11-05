@@ -223,16 +223,6 @@ apps:
     plugs: *pluglist
     slots: *slotlist
 
-  xdg-desktop-portal-gnome:
-    command: run.sh $SNAP/usr/libexec/xdg-desktop-portal-gnome
-    plugs: *pluglist
-    slots: *slotlist
-
-  xdg-desktop-portal-gtk:
-    command: run.sh $SNAP/usr/libexec/xdg-desktop-portal-gtk
-    plugs: *pluglist
-    slots: *slotlist
-
   ibus-service:
     command: run.sh $SNAP/usr/bin/ibus-daemon --panel disable
     daemon: dbus
@@ -283,11 +273,6 @@ apps:
     plugs: *pluglist
     slots: *slotlist
 
-  gtk-settings:
-    command: run.sh $SNAP/usr/libexec/gsd-xsettings
-    plugs: *pluglist
-    slots: *slotlist
-
   gnome-settings:
     command: run.sh $SNAP/usr/bin/gnome-control-center
     daemon: dbus
@@ -295,11 +280,6 @@ apps:
     activates-on:
       - dbus-gnome-settings
     restart-delay: 1s
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-a11y:
-    command: run.sh $SNAP/usr/libexec/gsd-a11y-settings
     plugs: *pluglist
     slots: *slotlist
 
@@ -313,61 +293,6 @@ apps:
     plugs: *pluglist
     slots: *slotlist
 
-  gnome-settings-datetime:
-    command: run.sh $SNAP/usr/libexec/gsd-datetime
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-housekeeping:
-    command: run.sh $SNAP/usr/libexec/gsd-housekeeping
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-keyboard:
-    command: run.sh $SNAP/usr/libexec/gsd-keyboard
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-media-keys:
-    command: run.sh $SNAP/usr/libexec/gsd-media-keys
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-power:
-    command: run.sh $SNAP/usr/libexec/gsd-power
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-print-notifications:
-    command: run.sh $SNAP/usr/libexec/gsd-print-notifications
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-rfkill:
-    command: run.sh $SNAP/usr/libexec/gsd-rfkill
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-screensaver-proxy:
-    command: run.sh $SNAP/usr/libexec/gsd-screensaver-proxy
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-sharing:
-    command: run.sh $SNAP/usr/libexec/gsd-sharing
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-smartcard:
-    command: run.sh $SNAP/usr/libexec/gsd-smartcard
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-sound:
-    command: run.sh $SNAP/usr/libexec/gsd-sound
-    plugs: *pluglist
-    slots: *slotlist
-
   gnome-settings-usb-protection:
     command: run.sh $SNAP/usr/libexec/gsd-usd-protection
     daemon: dbus
@@ -375,16 +300,6 @@ apps:
     activates-on:
       - dbus-gsd-usbprotection
     restart-delay: 1s
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-wacom:
-    command: run.sh $SNAP/usr/libexec/gsd-wacom
-    plugs: *pluglist
-    slots: *slotlist
-
-  gnome-settings-xsettings:
-    command: run.sh $SNAP/usr/libexec/gsd-xsettings
     plugs: *pluglist
     slots: *slotlist
 
@@ -835,16 +750,6 @@ parts:
       exec /usr/libexec/gsd-xsettings.real "$@"
       EOF
       chmod a+x $CRAFT_PART_INSTALL/usr/libexec/gsd-xsettings
-
-      # remove dependencies on ubuntu session (temporary)
-      rm -f $CRAFT_PART_INSTALL/usr/share/gnome-session/sessions/ubuntu.session
-
-      cat <<\EOF > $CRAFT_PART_INSTALL/usr/share/gnome-session/sessions/ubuntu.session
-      [GNOME Session]
-      Name=Ubuntu
-      # Must be in sync with gnome-session@ubuntu.target.d/ubuntu.session.conf drop-in
-      RequiredComponents=org.gnome.Shell;org.gnome.SettingsDaemon.A11ySettings;org.gnome.SettingsDaemon.Datetime;org.gnome.SettingsDaemon.Housekeeping;org.gnome.SettingsDaemon.Keyboard;org.gnome.SettingsDaemon.MediaKeys;org.gnome.SettingsDaemon.Power;org.gnome.SettingsDaemon.PrintNotifications;org.gnome.SettingsDaemon.Rfkill;org.gnome.SettingsDaemon.ScreensaverProxy;org.gnome.SettingsDaemon.Sharing;org.gnome.SettingsDaemon.Smartcard;org.gnome.SettingsDaemon.Sound;org.gnome.SettingsDaemon.Wacom;org.gnome.SettingsDaemon.XSettings;
-      EOF
 
       craftctl default
 
