@@ -24,7 +24,7 @@ if ! grep "^snap$" $HOME/.hidden 2>&1 > /dev/null; then
 fi
 
 export XDG_DATA_DIRS=${XDG_DATA_DIRS:+$XDG_DATA_DIRS:}$SNAP/usr/share
-export PATH=${PATH:+$PATH:}$SNAP/usr/bin
+export PATH=${PATH:+$PATH:}$SNAP/usr/bin:$SNAP/usr/libexec:$SNAP/gnome-platform/usr/bin:$SNAP/gnome-platform/usr/libexec
 
 # if [ ! -f $USERPATH/wayland-0 ]; then
 #   ln -s $USERPATH/snap.ubuntu-desktop-session/wayland-0 $USERPATH/wayland-0
