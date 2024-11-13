@@ -22,10 +22,11 @@ environment:
   XDG_CONFIG_HOME: $SNAP_USER_COMMON/.config
   XDG_DATA_HOME: $SNAP_USER_COMMON/.local/share
   XDG_STATE_HOME: $SNAP_USER_COMMON/.local/state
-  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$SNAP/lib:$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/gnome-settings-daemon-46:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libunity:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-miners-3.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-3.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30:$SNAP/gnome-platform/usr/lib:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/gpu-2404/usr/lib:$SNAP/gpu-2404/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gvfs
+  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$SNAP/gnome-platform/usr/lib:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libunity:$SNAP/gpu-2404/usr/lib:$SNAP/gpu-2404/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/lib:$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/gnome-settings-daemon-46:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-miners-3.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-3.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gvfs
   GSETTINGS_SCHEMA_DIR: $SNAP/gnome-platform/usr/share/glib-2.0/schemas:$SNAP/usr/share/glib-2.0/schemas${GSETTINGS_SCHEMA_DIR:+:$GSETTINGS_SCHEMA_DIR}
   GI_TYPELIB_PATH: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:$SNAP/gnome-platform/usr/lib/girepository-1.0:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gjs/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gjs/girepository-1.0:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/gnome-shell/girepository-1.0:$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}
   SNAP_DESKTOP_RUNTIME: $SNAP/gnome-platform
+  PATH: /bin:/usr/bin:$SNAP/bin:$SNAP/usr/bin:$SNAP/usr/libexec:$SNAP/gnome-platform/bin:$SNAP/gnome-platform/usr/bin:$SNAP/gnome-platform/usr/libexec${PATH:+:$PATH}
 
 layout:
   /usr/share/libinput:
@@ -53,7 +54,7 @@ layout:
   /usr/share/icons:
     bind: $SNAP/usr/share/icons
   /usr/share/mime:
-    symlink: $SNAP/usr/share/mime
+    symlink: $SNAP/gnome-platform/usr/share/mime
   /usr/share/tracker3:
     symlink: $SNAP/usr/share/tracker3
   /usr/share/tracker3-miners:
@@ -70,6 +71,56 @@ layout:
     symlink: $SNAP/gnome-platform/usr/share/defaults
   /usr/share/xdg-desktop-portal:
     symlink: $SNAP/usr/share/xdg-desktop-portal
+
+  /usr/share/dbus-1/interfaces/org.freedesktop.Accounts.User.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.Accounts.User.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.Tracker3.Miner.Files.Index.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.Tracker3.Miner.Files.Index.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.Accounts.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.Accounts.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.Tracker3.Miner.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.Tracker3.Miner.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.ColorHelper.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.ColorHelper.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.UPower.Device.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.UPower.Device.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.ColorManager.Device.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.ColorManager.Device.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.UPower.KbdBacklight.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.UPower.KbdBacklight.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.ColorManager.Profile.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.ColorManager.Profile.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.UPower.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.UPower.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.ColorManager.Sensor.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.ColorManager.Sensor.xml
+  /usr/share/dbus-1/interfaces/org.gnome.Shell.Extensions.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.gnome.Shell.Extensions.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.ColorManager.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.ColorManager.xml
+  /usr/share/dbus-1/interfaces/org.gnome.Shell.Introspect.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.gnome.Shell.Introspect.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.GeoClue2.Agent.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.GeoClue2.Agent.xml
+  /usr/share/dbus-1/interfaces/org.gnome.Shell.PadOsd.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.gnome.Shell.PadOsd.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.GeoClue2.Client.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.GeoClue2.Client.xml
+  /usr/share/dbus-1/interfaces/org.gnome.Shell.Screencast.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.gnome.Shell.Screencast.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.GeoClue2.Location.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.GeoClue2.Location.xml
+  /usr/share/dbus-1/interfaces/org.gnome.Shell.Screenshot.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.gnome.Shell.Screenshot.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.GeoClue2.Manager.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.GeoClue2.Manager.xml
+  /usr/share/dbus-1/interfaces/org.gnome.ShellSearchProvider2.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.gnome.ShellSearchProvider2.xml
+  /usr/share/dbus-1/interfaces/org.freedesktop.GeoClue2.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.GeoClue2.xml
+  /usr/share/dbus-1/interfaces/org.gnome.ShellSearchProvider.xml:
+    symlink: $SNAP/usr/share/dbus-1/interfaces/org.gnome.ShellSearchProvider.xml
+
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30:
     symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0:
@@ -96,8 +147,6 @@ layout:
     bind: $SNAP/gnome-platform/etc/fonts
   /etc/gnome:
     bind: $SNAP/etc/gnome
-  /etc/mime.types:
-    bind-file: $SNAP/etc/mime.types
   /etc/profile.d/gnome-session_gnomerc.sh:
     bind-file: $SNAP/etc/profile.d/gnome-session_gnomerc.sh
   /etc/profile.d/xdg-dirs-desktop-session.sh:
@@ -110,6 +159,14 @@ layout:
     bind: $SNAP/gnome-platform/etc/X11
   /etc/pulse:
     bind: $SNAP/gnome-platform/etc/pulse
+  /etc/xdg/Xwayland-session.d:
+    bind: $SNAP/etc/xdg/Xwayland-session.d
+  /etc/xdg/menus:
+    symlink: $SNAP/etc/xdg/menus
+  /etc/xdg/xdg/user-dirs.conf:
+    symlink: $SNAP/gnome-platform/etc/xdg/user-dirs.conf
+  /etc/xdg/xdg/user-dirs.defaults:
+    symlink: $SNAP/gnome-platform/etc/xdg/user-dirs.defaults
 
   /usr/bin/Xwayland:
     symlink: $SNAP/usr/bin/Xwayland
@@ -134,17 +191,14 @@ layout:
     bind: $SNAP/gpu-2404/libdrm
   /usr/share/drirc.d:
     symlink: $SNAP/gpu-2404/drirc.d
-  /usr/share/X11/XErrorDB:
-    symlink: $SNAP/gpu-2404/X11/XErrorDB
 
 assumes:
 - snapd2.43
 hooks:
   configure:
     command-chain:
-      - snap/command-chain/hooks-configure-fonts
-    plugs:
-      - desktop
+      - command-chain/hooks-configure-fonts
+
 
 apps:
   ubuntu-desktop-session:
@@ -288,6 +342,16 @@ apps:
     activates-on:
       - dbus-colord
     restart-delay: 1s
+    plugs: *pluglist
+    slots: *slotlist
+
+  screensaver:
+    command: run.sh gjs -m /usr/share/gnome-shell/org.gnome.ScreenSaver
+    daemon: dbus
+    passthrough:
+      daemon-scope: user
+    activates-on:
+      - dbus-gnome-screensaver
     plugs: *pluglist
     slots: *slotlist
 
@@ -503,7 +567,6 @@ slots:
     interface: dbus
     bus: session
     name: org.kde.StatusNotifierWatcher
-
   dbus-freedesktop-screensaver:
     interface: dbus
     bus: session
@@ -725,8 +788,13 @@ parts:
       - yaru-theme-icon
     build-environment:
       - LD_LIBRARY_PATH: $CRAFT_PART_INSTALL/usr/lib:$CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-    build-snaps: [core24, gtk-common-themes, gnome-46-2404, mesa-2404]
+    build-snaps:
+      - core24
+      - gtk-common-themes
+      - gnome-46-2404
+      - mesa-2404
     override-build: |
+
       # remove duplicated files
       $CRAFT_PROJECT_DIR/snapbuildtools/remove_common.py -e usr/libexec usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/glib-2.0
       # delete empty folders
@@ -734,14 +802,6 @@ parts:
 
       # compile schemas
       glib-compile-schemas $CRAFT_PART_INSTALL/usr/share/glib-2.0/schemas
-
-      # update pixbuf-loaders cache
-      #export CACHE=$CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0/loaders.cache
-      #$CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders $CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0/loaders/* > $CACHE
-      #sed -i "s@$CRAFT_PART_INSTALL/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0@/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0@g" $CACHE
-
-      # update MIME types
-      #$CRAFT_PART_INSTALL/usr/bin/update-mime-database $CRAFT_PART_INSTALL/usr/share/mime
 
       # point to the right path
       sed -i 's@exec /usr/libexec@exec $SNAP/usr/libexec@g' $CRAFT_PART_INSTALL/usr/bin/gnome-session
@@ -765,4 +825,13 @@ parts:
       # delete the doc folders
       rm -rf $CRAFT_PART_INSTALL/usr/share/doc
       craftctl default
+
+  command-chain:
+    source: https://github.com/snapcore/snapcraft-desktop-integration.git
+    source-type: git
+    source-subdir: gnome
+    plugin: make
+    make-parameters:
+      - PLATFORM_PLUG=$SNAPCRAFT_PROJECT_NAME
+      - WITH_GRAPHICS=false
 
