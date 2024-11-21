@@ -22,13 +22,16 @@ environment:
   XDG_CONFIG_HOME: $SNAP_USER_COMMON/.config
   XDG_DATA_HOME: $SNAP_USER_COMMON/.local/share
   XDG_STATE_HOME: $SNAP_USER_COMMON/.local/state
-  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$SNAP/gnome-platform/usr/lib:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libunity:$SNAP/gpu-2404/usr/lib:$SNAP/gpu-2404/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/lib:$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/gnome-settings-daemon-46:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-miners-3.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-3.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gvfs
+  LD_LIBRARY_PATH: $SNAP/gnome-platform/usr/lib:${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libunity:$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/lib:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$SNAP/usr/lib/gnome-settings-daemon-46:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-miners-3.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/tracker-3.0:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libcanberra-0.30:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gvfs
   GSETTINGS_SCHEMA_DIR: $SNAP/gnome-platform/usr/share/glib-2.0/schemas:$SNAP/usr/share/glib-2.0/schemas${GSETTINGS_SCHEMA_DIR:+:$GSETTINGS_SCHEMA_DIR}
-  GI_TYPELIB_PATH: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:$SNAP/gnome-platform/usr/lib/girepository-1.0:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gjs/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gjs/girepository-1.0:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/gnome-shell/girepository-1.0:$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}
+  GI_TYPELIB_PATH: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:$SNAP/gnome-platform/usr/lib/girepository-1.0:$SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gjs/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/girepository-1.0:$SNAP/usr/lib/gnome-shell:$SNAP/usr/lib/gnome-shell/girepository-1.0:$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/mutter-14${GI_TYPELIB_PATH:+:$GI_TYPELIB_PATH}
   SNAP_DESKTOP_RUNTIME: $SNAP/gnome-platform
   PATH: /bin:/usr/bin:$SNAP/bin:$SNAP/usr/bin:$SNAP/usr/libexec:$SNAP/gnome-platform/bin:$SNAP/gnome-platform/usr/bin:$SNAP/gnome-platform/usr/libexec${PATH:+:$PATH}
+  XDG_DATA_DIRS: /usr/share:$SNAP/usr/share:$SNAP/gnome-platform/usr/share:$SNAP/data-dir:/var/lib/snapd/desktop${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}
 
 layout:
+  /usr/share/hwdata:
+    symlink: $SNAP/usr/share/hwdata
   /usr/share/libinput:
     symlink: $SNAP/gnome-platform/usr/share/libinput
   /usr/share/xml/iso-codes:
@@ -38,13 +41,16 @@ layout:
   /usr/share/applications:
     bind: $SNAP/usr/share/applications
   /usr/share/glvnd:
-    symlink: $SNAP/gpu-2404/usr/share/glvnd
+    symlink: $SNAP/usr/share/glvnd
+#    symlink: $SNAP/gpu-2404/usr/share/glvnd
   /usr/share/X11:
     symlink: $SNAP/gnome-platform/usr/share/X11
   /usr/share/egl:
-    symlink: $SNAP/gpu-2404/usr/share/egl
+    symlink: $SNAP/usr/share/egl
+    #symlink: $SNAP/gpu-2404/usr/share/egl
   /usr/share/vulkan:
-    symlink: $SNAP/gpu-2404/usr/share/vulkan
+    symlink: $SNAP/usr/share/vulkan
+    #symlink: $SNAP/gpu-2404/usr/share/vulkan
   /usr/share/fonts:
     bind: $SNAP/gnome-platform/usr/share/fonts
   /usr/share/fontconfig:
@@ -60,7 +66,7 @@ layout:
   /usr/share/tracker3-miners:
     symlink: $SNAP/usr/share/tracker3-miners
   /usr/share/libwacom:
-    symlink: $SNAP/gnome-platform/usr/share/libwacom
+    symlink: $SNAP/usr/share/libwacom
   /usr/share/nautilus:
     symlink: $SNAP/usr/share/nautilus
   /usr/share/gtk-3.0:
@@ -71,6 +77,9 @@ layout:
     symlink: $SNAP/gnome-platform/usr/share/defaults
   /usr/share/xdg-desktop-portal:
     symlink: $SNAP/usr/share/xdg-desktop-portal
+
+  /usr/share/libgnomekbd:
+    symlink: $SNAP/usr/share/libgnomekbd
 
   /usr/share/dbus-1/interfaces/org.freedesktop.Accounts.User.xml:
     symlink: $SNAP/usr/share/dbus-1/interfaces/org.freedesktop.Accounts.User.xml
@@ -126,9 +135,11 @@ layout:
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0:
     symlink: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/gdk-pixbuf-2.0/2.10.0
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri:
-    symlink: $SNAP/gpu-2404/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri
+    symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri
+    #symlink: $SNAP/gpu-2404/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/dri
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/vdpau:
-    symlink: $SNAP/gpu-2404/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/vdpau
+    symlink: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/vdpau
+    #symlink: $SNAP/gpu-2404/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/vdpau
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libgweather-4:
     symlink: $SNAP/gnome-platform/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libgweather-4
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/glib-2.0:
@@ -167,6 +178,8 @@ layout:
     symlink: $SNAP/gnome-platform/etc/xdg/user-dirs.conf
   /etc/xdg/xdg/user-dirs.defaults:
     symlink: $SNAP/gnome-platform/etc/xdg/user-dirs.defaults
+  /etc/geoclue:
+    bind: $SNAP/etc/geoclue
 
   /usr/bin/Xwayland:
     symlink: $SNAP/usr/bin/Xwayland
@@ -190,7 +203,7 @@ layout:
   /usr/share/libdrm:
     bind: $SNAP/gpu-2404/libdrm
   /usr/share/drirc.d:
-    symlink: $SNAP/gpu-2404/drirc.d
+    symlink: $SNAP/gpu-2040/drirc.d
 
 assumes:
 - snapd2.43
@@ -212,6 +225,7 @@ apps:
       - dbus-ibus-gtk3
       - dbus-ibus-portal
       - dbus-colord
+      - dbus-geoclue
       - dbus-gnome-shell-calendar-server
       - dbus-gtk-settings
       - dbus-gnome-settings
@@ -345,13 +359,12 @@ apps:
     plugs: *pluglist
     slots: *slotlist
 
-  screensaver:
-    command: run.sh gjs -m /usr/share/gnome-shell/org.gnome.ScreenSaver
+  geoclue:
+    command: run.sh /usr/libexec/geoclue
     daemon: dbus
-    passthrough:
-      daemon-scope: user
     activates-on:
-      - dbus-gnome-screensaver
+      - dbus-geoclue
+    restart-delay: 1s
     plugs: *pluglist
     slots: *slotlist
 
@@ -699,6 +712,10 @@ slots:
     interface: dbus
     name: org.freedesktop.ColorHelper
     bus: session
+  dbus-geoclue:
+    interface: dbus
+    name: org.freedesktop.GeoClue2
+    bus: system
 
 lint:
   ignore:
@@ -709,7 +726,7 @@ parts:
     source: https://github.com/sergio-costas/snap-build-tools.git
     source-depth: 1
     plugin: nil
-    source-branch: use-snap-list-from-snapcraft-file
+    source-branch: select-folders-to-clean
     build-packages:
       - python3-yaml
     override-pull: |
@@ -735,6 +752,7 @@ parts:
     plugin: nil
     build-packages:
       - libglib2.0-bin
+      - gtk-update-icon-cache
     stage-packages:
       - alsa-ucm-conf
       - at-spi2-core
@@ -755,6 +773,7 @@ parts:
       - gnome-shell-extension-ubuntu-dock
       - gnome-shell-extension-ubuntu-tiling-assistant
       - gsound-tools
+      - hwdata
       - ibus
       - im-config
       - inotify-tools
@@ -792,13 +811,18 @@ parts:
       - core24
       - gtk-common-themes
       - gnome-46-2404
-      - mesa-2404
+      #- mesa-2404
     override-build: |
 
       # remove duplicated files
-      $CRAFT_PROJECT_DIR/snapbuildtools/remove_common.py -e usr/libexec usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/glib-2.0
-      # delete empty folders
-      find $CRAFT_PART_INSTALL -type d -empty -delete
+      $CRAFT_PROJECT_DIR/snapbuildtools/remove_common.py -e usr/libexec usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/glib-2.0/gio\*
+
+      # recreate icons cache
+      for ICONPATH in $CRAFT_PART_INSTALL/usr/share/icons/*; do
+        if [ -f ${ICONPATH}/index.theme ]; then
+          gtk-update-icon-cache -f $ICONPATH
+        fi
+      done
 
       # compile schemas
       glib-compile-schemas $CRAFT_PART_INSTALL/usr/share/glib-2.0/schemas
@@ -822,8 +846,9 @@ parts:
       # copy gio utils into usr/libexec
       cp $CRAFT_PART_INSTALL/usr/lib/x86_64-linux-gnu/glib-2.0/gio* $CRAFT_PART_INSTALL/usr/libexec/
 
-      # delete the doc folders
+      # delete the doc and help folders
       rm -rf $CRAFT_PART_INSTALL/usr/share/doc
+      rm -rf $CRAFT_PART_INSTALL/usr/share/help
       craftctl default
 
   command-chain:
