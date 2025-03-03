@@ -215,6 +215,7 @@ apps:
       - dbus-ibus-gtk3
       - dbus-ibus-portal
       - dbus-colord
+      - udisks2
 
     plugs: &pluglist
       - account-daemon
@@ -439,6 +440,13 @@ apps:
   #   plugs: *pluglist
   #   slots: *slotlist
 
+  gvfs-udisks:
+    command: run.sh /usr/libexec/gvfs-udisks2-volume-monitor
+    daemon: dbus
+    daemon-scope: user
+    activates-on:
+      - gvfs-udisks-dbus
+
 plugs:
   dot-local-share-nautilus:
     interface: personal-files
@@ -472,8 +480,15 @@ plugs:
     interface: content
     target: $SNAP/data-dir/sounds
     default-provider: gtk-common-themes
+  udisks2: null
+  upower-observe: null
 
 slots:
+  desktop: null
+  gvfs-udisks-dbus:
+    interface: dbus
+    bus: session
+    name: org.gtk.vfs.UDisks2VolumeMonitor
   dbus-canonical-unity:
     interface: dbus
     bus: session
