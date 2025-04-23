@@ -217,7 +217,7 @@ apps:
       - dbus-colord
 
     plugs: &pluglist
-      - account-daemon
+      - account-control
       - audio-playback
       - audio-record
       - avahi-control
@@ -748,6 +748,7 @@ lint:
 parts:
   snapbuildtools:
     source: https://github.com/sergio-costas/snap-build-tools.git
+    source-branch: manage-dangling-symlinks
     source-depth: 1
     plugin: nil
     build-packages:
