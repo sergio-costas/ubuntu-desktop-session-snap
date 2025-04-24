@@ -217,7 +217,7 @@ apps:
       - dbus-colord
 
     plugs: &pluglist
-      - account-control
+      - account-daemon
       - audio-playback
       - audio-record
       - avahi-control
