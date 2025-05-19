@@ -113,8 +113,6 @@ layout:
     bind: $SNAP/etc/gnome
   /etc/mime.types:
     bind-file: $SNAP/etc/mime.types
-  /etc/profile.d/gnome-session_gnomerc.sh:
-    bind-file: $SNAP/etc/profile.d/gnome-session_gnomerc.sh
   /etc/xdg:
     bind: $SNAP/etc/xdg
   /etc/profile.d/xdg-dirs-desktop-session.sh:
@@ -138,8 +136,6 @@ layout:
     symlink: $SNAP/usr/bin/xdg-user-dir
   /usr/bin/xdg-user-dirs-update:
     symlink: $SNAP/usr/bin/xdg-user-dirs-update
-  /usr/bin/gnome-session-quit:
-    bind-file: $SNAP/usr/bin/gnome-session-quit
   /usr/bin/gnome-terminal.real:
     symlink: $SNAP/usr/bin/gnome-terminal.real
 
@@ -160,53 +156,18 @@ apps:
       - dbus-gnome-keyring
       - dbus-gnome-keyring-sysprompter
       - dbus-gnome-magnifier
-      - dbus-gnome-mutter-displayconfig
-      - dbus-gnome-mutter-idlemonitor
-      - dbus-gnome-mutter-input-capturer
-      - dbus-gnome-mutter-input-mapping
-      - dbus-gnome-mutter-remotedesktop
-      - dbus-gnome-mutter-screencast
-      - dbus-gnome-mutter-service-channel
-      - dbus-gnome-mutter-x11
       - dbus-gnome-panel
       - dbus-gnome-screensaver
       - dbus-gnome-sessionmanager
-      - dbus-gsd
-      - dbus-gsd-a11ysettings
-      - dbus-gsd-color
-      - dbus-gsd-datetime
-      - dbus-gsd-housekeeping
-      - dbus-gsd-keyboard
-      - dbus-gsd-mediakeys
-      - dbus-gsd-power
-      - dbus-gsd-printnotifications
-      - dbus-gsd-rfkill
-      - dbus-gsd-screensaverproxy
-      - dbus-gsd-sharing
-      - dbus-gsd-smartcard
-      - dbus-gsd-sound
-      - dbus-gsd-usbprotection
-      - dbus-gsd-wacom
-      - dbus-gsd-wwan
-      - dbus-gsd-xsettings
       - dbus-gnome-nautilus
-      - dbus-gnome-shell
-      - dbus-gnome-shell-audio
-      - dbus-gnome-shell-introspect
-      - dbus-gnome-shell-portal
-      - dbus-gnome-shell-screencast
-      - dbus-gnome-shell-screenshot
-      - dbus-gnome-shell-wacom
       - dbus-gnome-settings
       - dbus-gnome-terminal
       - dbus-gnome-extensions
-      - dbus-gnome-shell-extensions
       - dbus-gtk-mountoperationhandler
       - dbus-gtk-notifications
       - dbus-gnome-notifications
       - dbus-gnome-calendar-server
       - dbus-gnome-hotplug-sniffer
-      - dbus-gtk-settings
       - dbus-kde-statusnotifier
       - dbus-desktop-icons
       - dbus-desktop-icons-extension
@@ -746,24 +707,11 @@ lint:
     - classic
 
 parts:
-  snapbuildtools:
-    source: https://github.com/sergio-costas/snap-build-tools.git
-    source-branch: manage-dangling-symlinks
-    source-depth: 1
-    plugin: nil
-    build-packages:
-      - python3-yaml
-    override-pull: |
-      craftctl default
-      $CRAFT_PART_SRC/install
-
   scripts:
-    after: [snapbuildtools]
     plugin: dump
     source: ./scripts
 
   ubuntu-desktop-session:
-    after: [snapbuildtools]
     plugin: nil
     build-packages:
       - git
@@ -772,7 +720,6 @@ parts:
       craftctl set version=$(date +%Y%m%d)+git$(git rev-parse --short HEAD)
 
   packages:
-    after: [snapbuildtools]
     plugin: nil
     build-packages:
       - libglib2.0-bin

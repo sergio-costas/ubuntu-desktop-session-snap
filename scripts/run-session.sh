@@ -16,7 +16,6 @@ mkdir -p --mode=700 $XDG_RUNTIME_DIR
 USERPATH=/run/user/`id -u`
 
 export PULSE_SERVER=unix:$USERPATH/pulse/native
-#export WAYLAND_DISPLAY=$USERPATH/wayland-0
 export GNOME_SHELL_SESSION_MODE=ubuntu
 export PIPEWIRE_RUNTIME_DIR=$USERPATH
 
