@@ -724,6 +724,7 @@ parts:
     build-packages:
       - libglib2.0-bin
       - gtk-update-icon-cache
+      - python3-yaml
     stage-packages:
       - alsa-ucm-conf
       - at-spi2-core
